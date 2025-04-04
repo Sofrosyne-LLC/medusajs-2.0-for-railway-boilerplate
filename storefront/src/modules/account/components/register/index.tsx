@@ -1,6 +1,7 @@
 "use client"
 
-import { useActionState } from "react"
+import { useFormState } from "react-dom"
+
 import Input from "@modules/common/components/input"
 import { LOGIN_VIEW } from "@modules/account/templates/login-template"
 import ErrorMessage from "@modules/checkout/components/error-message"
@@ -13,7 +14,7 @@ type Props = {
 }
 
 const Register = ({ setCurrentView }: Props) => {
-  const [message, formAction] = useActionState(signup, null)
+  const [message, formAction] = useFormState(signup, null)
 
   return (
     <div
@@ -21,10 +22,10 @@ const Register = ({ setCurrentView }: Props) => {
       data-testid="register-page"
     >
       <h1 className="text-large-semi uppercase mb-6">
-        Become a Store Member
+        Become a Medusa Store Member
       </h1>
       <p className="text-center text-base-regular text-ui-fg-base mb-4">
-        Create your Store Member profile, and get access to an enhanced
+        Create your Medusa Store Member profile, and get access to an enhanced
         shopping experience.
       </p>
       <form className="w-full flex flex-col" action={formAction}>
@@ -69,7 +70,7 @@ const Register = ({ setCurrentView }: Props) => {
         </div>
         <ErrorMessage error={message} data-testid="register-error" />
         <span className="text-center text-ui-fg-base text-small-regular mt-6">
-          By creating an account, you agree to the Store&apos;s{" "}
+          By creating an account, you agree to Medusa Store&apos;s{" "}
           <LocalizedClientLink
             href="/content/privacy-policy"
             className="underline"

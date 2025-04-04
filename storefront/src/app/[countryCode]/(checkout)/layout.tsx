@@ -2,8 +2,6 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import ChevronDown from "@modules/common/icons/chevron-down"
 import MedusaCTA from "@modules/layout/components/medusa-cta"
 
-const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "Medusa Store"
-
 export default function CheckoutLayout({
   children,
 }: {
@@ -31,7 +29,7 @@ export default function CheckoutLayout({
             className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
             data-testid="store-link"
           >
-            {storeName}
+            Medusa Store
           </LocalizedClientLink>
           <div className="flex-1 basis-0" />
         </nav>

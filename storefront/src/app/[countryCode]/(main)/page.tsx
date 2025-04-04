@@ -2,37 +2,26 @@ import { Metadata } from "next"
 
 import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
-import { listCollections } from "@lib/data/collections"
+import { getCollectionsWithProducts } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
-const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "Medusa Store"
-
 export const metadata: Metadata = {
-  title: storeName,
+  title: "Medusa Next.js Starter Template",
   description:
-    "A performant frontend ecommerce starter template with Next.js 15 and Medusa.",
+    "A performant frontend ecommerce starter template with Next.js 14 and Medusa.",
 }
 
-export default async function Home(props: {
-  params: Promise<{ countryCode: string }>
+export default async function Home({
+  params: { countryCode },
+}: {
+  params: { countryCode: string }
 }) {
-  const params = await props.params
-
-  const { countryCode } = params
-
+  const collections = await getCollectionsWithProducts(countryCode)
   const region = await getRegion(countryCode)
-
-  const { collections } = await listCollections({
-    fields: "id, handle, title",
-  })
 
   if (!collections || !region) {
     return null
   }
-
-  console.log(" Collections " + collections)
-  console.log(" Region " + region.name)
-
 
   return (
     <>
