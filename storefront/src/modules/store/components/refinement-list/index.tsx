@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useCallback } from "react"
 
 import SortProducts, { SortOptions } from "./sort-products"
+import CategoryFilter from "@modules/categories/components/CategoryFilter"
 
 type RefinementListProps = {
   sortBy: SortOptions
@@ -27,13 +28,16 @@ const RefinementList = ({ sortBy, 'data-testid': dataTestId }: RefinementListPro
   )
 
   const setQueryParams = (name: string, value: string) => {
-    const query = createQueryString(name, value)
-    router.push(`${pathname}?${query}`)
+
+    router.push(`/categories/${value}`)
   }
 
   return (
-    <div className="flex small:flex-col gap-12 py-4 mb-8 small:px-0 pl-6 small:min-w-[250px] small:ml-[1.675rem]">
-      <SortProducts sortBy={sortBy} setQueryParams={setQueryParams} data-testid={dataTestId} />
+    <div className="flex small:flex-col gap-12 py-4 mb-8 small:px-0 pl-6 small:min-w-[250px] small:ml-[1.675rem] mr-[1rem]">
+      <div className="flex flex-col gap-6 w-full">
+        <SortProducts sortBy={sortBy} setQueryParams={setQueryParams} data-testid={dataTestId} />
+        <CategoryFilter setQueryParams={setQueryParams} data-testid={dataTestId} />
+      </div>
     </div>
   )
 }

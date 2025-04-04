@@ -1,13 +1,21 @@
-import { getCategoriesList } from "@lib/data/categories"
-import { getCollectionsList } from "@lib/data/collections"
+import { listCategories } from "@lib/data/categories"
+import { listCollections } from "@lib/data/collections"
 import { Text, clx } from "@medusajs/ui"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import MedusaCTA from "@modules/layout/components/medusa-cta"
+import Link from "next/link"
 
 export default async function Footer() {
-  const { collections } = await getCollectionsList(0, 6)
-  const { product_categories } = await getCategoriesList(0, 6)
+  const { collections } = await listCollections({
+    fields: "*products",
+  })
+
+  const productCategories = await listCategories()
+
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || "Medusa Store"
+
+  const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || ""
 
   return (
     <footer className="border-t border-ui-border-base w-full">
@@ -18,11 +26,27 @@ export default async function Footer() {
               href="/"
               className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
             >
-              Medusa Store
+              {storeName}
             </LocalizedClientLink>
+
+            <div className="py-8 flex flex-col gap-2">
+              <Text className="txt-medium text-black">
+                Address: 7, Deptford Broadway Deptford, London, SE8 4PA
+              </Text>
+
+              <Text className="txt-medium text-black">
+                Tel: +44 208 469 4233
+              </Text>
+
+              <Text className="txt-medium text-black">
+                Mobile: +44 7494 926718
+              </Text>
+            </div>
           </div>
-          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
-            {product_categories && product_categories?.length > 0 && (
+
+          {/* Category */}
+          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-4">
+            {productCategories && productCategories?.length > 0 && (
               <div className="flex flex-col gap-y-2">
                 <span className="txt-small-plus txt-ui-fg-base">
                   Categories
@@ -31,7 +55,7 @@ export default async function Footer() {
                   className="grid grid-cols-1 gap-2"
                   data-testid="footer-categories"
                 >
-                  {product_categories?.slice(0, 6).map((c) => {
+                  {productCategories?.slice(0, 6).map((c) => {
                     if (c.parent_category) {
                       return
                     }
@@ -80,6 +104,7 @@ export default async function Footer() {
                 </ul>
               </div>
             )}
+            {/* Collection */}
             {collections && collections.length > 0 && (
               <div className="flex flex-col gap-y-2">
                 <span className="txt-small-plus txt-ui-fg-base">
@@ -106,17 +131,18 @@ export default async function Footer() {
                 </ul>
               </div>
             )}
+            {/* Social */}
             <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">Medusa</span>
+              <span className="txt-small-plus txt-ui-fg-base">Social</span>
               <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
                 <li>
                   <a
-                    href="https://github.com/medusajs"
+                    href="https://www.instagram.com/melvinsofficial/"
                     target="_blank"
                     rel="noreferrer"
                     className="hover:text-ui-fg-base"
                   >
-                    GitHub
+                    Instagram
                   </a>
                 </li>
                 <li>
@@ -126,7 +152,7 @@ export default async function Footer() {
                     rel="noreferrer"
                     className="hover:text-ui-fg-base"
                   >
-                    Documentation
+                    Facebook
                   </a>
                 </li>
                 <li>
@@ -136,16 +162,54 @@ export default async function Footer() {
                     rel="noreferrer"
                     className="hover:text-ui-fg-base"
                   >
-                    Source code
+                    Tiktok
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={`mailto:${contactEmail}?subject=Customer Enquiry`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-ui-fg-base"
+                  >
+                    Contact Us
                   </a>
                 </li>
               </ul>
             </div>
+            {/* Support */}
+            <div className="flex flex-col gap-y-2">
+              <span className="txt-small-plus txt-ui-fg-base">Support</span>
+              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
+                <li>
+                  <Link href="/terms" className="hover:text-ui-fg-base">
+                    Terms & Conditions
+                  </Link>
+
+                </li>
+                <li>
+                  <Link href="/return" className="hover:text-ui-fg-base">
+                    Return Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/shipping" className="hover:text-ui-fg-base">
+                    Shipping
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/size" className="hover:text-ui-fg-base">
+                    Size Chart
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
           </div>
         </div>
         <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
           <Text className="txt-compact-small">
-            © {new Date().getFullYear()} Medusa Store. All rights reserved.
+            © {new Date().getFullYear()} {storeName}. All rights reserved.
           </Text>
           <MedusaCTA />
         </div>
